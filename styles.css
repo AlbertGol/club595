@@ -1,0 +1,59 @@
+--bg: #FDF9ED;
+    --olive: #8E9382;
+    --olive-dark: #5B6356;
+    --brown: #8B5E3C;
+    --peach: #F6AD94;
+    --text: #5D4037;
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+body { font-family: -apple-system, sans-serif; background: var(--bg); margin: 0; color: var(--text); }
+
+.container { max-width: 450px; margin: 0 auto; padding: 20px; }
+h1 { font-size: 24px; font-weight: 900; letter-spacing: 2px; text-align: center; text-transform: uppercase; }
+
+/* Кнопки как на скринах */
+.service-btn { 
+    width: 100%; background: #D9A87E; color: var(--text); padding: 20px; 
+    border-radius: 12px; margin-bottom: 10px; border: none; font-weight: 700; text-align: left;
+}
+
+/* Шахматка админа */
+.admin-header { display: flex; justify-content: space-between; padding: 15px; background: white; border-bottom: 1px solid #EEE; }
+.grid-row { display: flex; height: 80px; border-bottom: 1px dotted #EEE; }
+.time-col { width: 60px; border-right: 1px solid #EEE; font-size: 10px; color: #AAA; text-align: right; padding: 5px; }
+.slot { flex: 1; border-right: 1px solid #EEE; position: relative; }
+
+/* Плашка записи */
+.booking-badge { 
+    position: absolute; inset: 2px; background: var(--peach); 
+    border-left: 4px solid #E57373; border-radius: 4px; padding: 6px; font-size: 10px; 
+}
+
+/* Всплывающая карточка */
+.modal { 
+    position: fixed; bottom: 0; left: 0; right: 0; background: white; 
+    border-radius: 20px 20px 0 0; padding: 25px; transform: translateY(100%); transition: 0.3s; z-index: 100;
+}
+.modal.active { transform: translateY(0); }
+.overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; z-index: 90; }
+.overlay.active { display: block; }
+Нажми Commit changes.
+ФАЙЛ 3: app.js (Мозг клиента)
+code
+JavaScript
+const firebaseConfig = {
+    apiKey: "AIzaSyDFvlQ-tr9hARes2Z8M5iK8h2bJQlWNJD8",
+    authDomain: "club595.firebaseapp.com",
+    projectId: "club595",
+    storageBucket: "club595.firebasestorage.app",
+    messagingSenderId: "452572247063",
+    appId: "1:452572247063:web:040230b948ada5b9a69852"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+// Тут будет логика записи (Neck massage, Detox и т.д.)
+// Я напишу подробный код в следующем сообщении, чтобы ты не запутался
+console.log("Мозг клиента запущен");
