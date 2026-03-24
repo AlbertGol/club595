@@ -1,24 +1,35 @@
 :root {
-    --bg: #FDF9ED; --olive: #8E9382; --olive-dark: #5B6356;
-    --brown: #8B5E3C; --peach: #F6AD94; --text: #5D4037;
+    --olive: #8E9382;
+    --olive-dark: #5B6356;
+    --warm-grey: #E9E7E2;
+    --text: #3A3D38;
+    --white: #FFFFFF;
 }
-* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-body { font-family: -apple-system, sans-serif; background: var(--bg); margin: 0; color: var(--text); overflow-x: hidden; }
-.container { max-width: 450px; margin: 0 auto; padding: 20px; min-height: 100vh; display: flex; flex-direction: column; }
-h1 { font-size: 24px; font-weight: 900; letter-spacing: 2px; text-align: center; color: var(--olive-dark); text-transform: uppercase; }
-.service-btn { width: 100%; background: #D9A87E; color: var(--text); padding: 20px; border-radius: 12px; margin-bottom: 10px; border: none; cursor: pointer; font-weight: 700; text-align: left; display: flex; align-items: center; }
-.service-btn::before { content: '+'; margin-right: 15px; font-size: 20px; }
-.book-btn { background: var(--brown); color: white; border: none; padding: 16px; border-radius: 12px; width: 100%; font-weight: 700; cursor: pointer; margin-top: 10px; }
-.admin-view { background: white; min-height: 100vh; display: none; }
-header { display: flex; justify-content: space-between; padding: 15px; background: white; border-bottom: 1px solid #EEE; position: sticky; top: 0; z-index: 10; }
-.masters-row { display: flex; background: white; border-bottom: 1px solid #EEE; }
-.time-col { width: 60px; border-right: 1px solid #EEE; font-size: 10px; color: #AAA; text-align: right; padding: 5px; flex-shrink: 0; }
-.master-head { flex: 1; text-align: center; padding: 10px 0; border-right: 1px solid #EEE; }
-.avatar { width: 32px; height: 32px; background: #CCC; border-radius: 50%; margin: 0 auto 5px; display: flex; align-items: center; justify-content: center; color: white; font-size: 12px; font-weight: bold; }
-.grid-row { display: flex; height: 80px; border-bottom: 1px dotted #EEE; }
-.slot { flex: 1; border-right: 1px solid #EEE; position: relative; }
-.booking-badge { position: absolute; inset: 2px; background: var(--peach); border-left: 4px solid #E57373; border-radius: 4px; padding: 6px; cursor: pointer; font-size: 10px; overflow: hidden; }
-.modal { position: fixed; bottom: 0; left: 0; right: 0; background: white; border-radius: 20px 20px 0 0; z-index: 100; padding: 25px; transform: translateY(100%); transition: 0.3s; box-shadow: 0 -10px 40px rgba(0,0,0,0.1); }
-.modal.active { transform: translateY(0); }
-.overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 90; display: none; backdrop-filter: blur(4px); }
-.overlay.active { display: block; }
+
+body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background: var(--warm-grey); margin: 0; color: var(--text); }
+.container { max-width: 450px; margin: 0 auto; padding: 30px 20px; }
+
+/* Bio Header */
+.profile-header { text-align: center; margin-bottom: 40px; }
+.avatar-circle { width: 90px; height: 90px; background: var(--olive); border-radius: 50%; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 900; font-size: 24px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+h1 { font-size: 28px; font-weight: 800; letter-spacing: 2px; margin: 0; }
+.tagline { opacity: 0.6; font-size: 14px; margin: 10px 0; }
+.social-row a { color: var(--olive-dark); font-weight: 700; text-decoration: none; font-size: 12px; text-transform: uppercase; }
+
+/* Sections */
+.section { margin-bottom: 40px; }
+.section-title { font-size: 11px; text-transform: uppercase; letter-spacing: 3px; font-weight: 800; color: var(--olive-mid); margin-bottom: 20px; opacity: 0.7; }
+
+/* Services */
+.service-card { background: var(--white); border-radius: 20px; padding: 20px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
+.service-name { font-weight: 700; }
+.service-price { font-weight: 900; color: var(--olive-dark); }
+
+/* Portfolio */
+.portfolio-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.port-item { background: #D0CDC7; height: 140px; border-radius: 15px; }
+
+/* Modal */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(10px); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 20px; }
+.modal-card { background: white; width: 100%; max-width: 380px; border-radius: 35px; padding: 30px; position: relative; }
+.btn-close { margin-top: 20px; width: 100%; background: #EEE; border: none; padding: 15px; border-radius: 15px; font-weight: 700; }
