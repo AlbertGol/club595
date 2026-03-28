@@ -3,58 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CLUB 595 | Bio-Page</title>
+    <title>CLUB 595 | Aesthetic & Booking</title>
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="app">
+
+    <!-- CLIENT VIEW (Bio-Page) -->
+    <div id="client-view" class="view">
         <div class="container">
-            <!-- ШАПКА -->
-            <header class="profile-header">
-                <div class="avatar-circle">595</div>
-                <h1>CLUB 5/95</h1>
-                <p class="tagline">Innovative Massage & Tech Studio</p>
-                <div class="social-row">
-                    <a href="#">Instagram</a> • <a href="#">WhatsApp</a>
+            <header class="hero">
+                <div class="profile-pic">595</div>
+                <h1 class="brand-title">Club 5/95</h1>
+                <p class="brand-bio">Innovative Japanese Stone & Tech Massage Studio</p>
+                <div class="social-pills" id="socials">
+                    <a href="#" class="pill"><i class="ph ph-instagram-logo"></i></a>
+                    <a href="#" class="pill"><i class="ph ph-whatsapp-logo"></i></a>
                 </div>
             </header>
 
-            <!-- УСЛУГИ -->
             <section class="section">
-                <h2 class="section-title">Our Services</h2>
-                <div id="services-list">
-                    <!-- Сюда подгрузятся услуги из базы -->
-                </div>
+                <h2 class="section-label">Premium Services</h2>
+                <div id="services-list" class="services-list"></div>
             </section>
 
-            <!-- ПОРТФОЛИО -->
             <section class="section">
-                <h2 class="section-title">Portfolio</h2>
-                <div class="portfolio-grid" id="portfolio-list">
-                    <div class="port-item"></div><div class="port-item"></div>
-                    <div class="port-item"></div><div class="port-item"></div>
-                </div>
+                <h2 class="section-label">Portfolio</h2>
+                <div id="portfolio-grid" class="portfolio-grid"></div>
             </section>
 
-            <!-- ОТЗЫВЫ -->
             <section class="section">
-                <h2 class="section-title">Reviews</h2>
-                <div id="reviews-list">
-                    <div class="review-card">⭐⭐⭐⭐⭐ "The best massage ever!"</div>
-                </div>
+                <h2 class="section-label">Client Reviews</h2>
+                <div id="reviews-list" class="reviews-list"></div>
             </section>
 
-            <button class="btn-admin" onclick="window.location.href='#admin'">Staff Entrance</button>
+            <footer>
+                <button class="admin-access-btn" onclick="showView('admin-login')">Staff Access</button>
+            </footer>
         </div>
     </div>
 
-    <!-- Модальное окно записи -->
-    <div id="booking-modal" class="modal-overlay" style="display:none">
-        <div class="modal-card">
-            <div id="modal-content"></div>
-            <button class="btn-close" onclick="closeBooking()">Close</button>
+    <!-- BOOKING FLOW MODAL -->
+    <div id="booking-modal" class="modal-overlay">
+        <div class="modal-card shadow-premium">
+            <button class="modal-close" onclick="closeBooking()">✕</button>
+            <div id="booking-step-content"></div>
+        </div>
+    </div>
+
+    <!-- ADMIN LOGIN -->
+    <div id="admin-login" class="view hidden">
+        <div class="container center-vh">
+            <div class="login-card shadow-premium">
+                <h2>Admin Login</h2>
+                <input type="email" id="login-email" placeholder="Email">
+                <input type="password" id="login-pass" placeholder="Password">
+                <button class="btn-primary" onclick="handleLogin()">Enter Dashboard</button>
+                <button class="btn-link" onclick="showView('client-view')">Back to Site</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADMIN DASHBOARD -->
+    <div id="admin-dashboard" class="view hidden">
+        <header class="admin-nav">
+            <span class="logo">CLUB 595 <small>ADMIN</small></span>
+            <button onclick="handleLogout()">Logout</button>
+        </header>
+        <div class="admin-container">
+            <div class="admin-tabs">
+                <button onclick="renderAdminSection('grid')">Schedule</button>
+                <button onclick="renderAdminSection('services')">Services</button>
+                <button onclick="renderAdminSection('clients')">Clients</button>
+            </div>
+            <div id="admin-content-area"></div>
         </div>
     </div>
 
