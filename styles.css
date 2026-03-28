@@ -1,35 +1,43 @@
 :root {
-    --olive: #8E9382;
-    --olive-dark: #5B6356;
-    --warm-grey: #E9E7E2;
-    --text: #3A3D38;
-    --white: #FFFFFF;
+    --olive: #8E9382; --olive-dark: #5B6356;
+    --sand: #F4F3F1; --text: #3A3D38;
+    --accent: #D9A87E; --white: #FFFFFF;
 }
 
-body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background: var(--warm-grey); margin: 0; color: var(--text); }
-.container { max-width: 450px; margin: 0 auto; padding: 30px 20px; }
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+body { font-family: 'Inter', sans-serif; background: var(--sand); margin: 0; color: var(--text); overflow-x: hidden; }
 
-/* Bio Header */
-.profile-header { text-align: center; margin-bottom: 40px; }
-.avatar-circle { width: 90px; height: 90px; background: var(--olive); border-radius: 50%; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 900; font-size: 24px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
-h1 { font-size: 28px; font-weight: 800; letter-spacing: 2px; margin: 0; }
-.tagline { opacity: 0.6; font-size: 14px; margin: 10px 0; }
-.social-row a { color: var(--olive-dark); font-weight: 700; text-decoration: none; font-size: 12px; text-transform: uppercase; }
+.container { max-width: 480px; margin: 0 auto; padding: 40px 20px; }
+.hidden { display: none !important; }
 
-/* Sections */
-.section { margin-bottom: 40px; }
-.section-title { font-size: 11px; text-transform: uppercase; letter-spacing: 3px; font-weight: 800; color: var(--olive-mid); margin-bottom: 20px; opacity: 0.7; }
+/* Bio Hero */
+.hero { text-align: center; margin-bottom: 40px; }
+.profile-pic { width: 80px; height: 80px; background: var(--olive); border-radius: 50%; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 800; font-size: 20px; }
+.brand-title { font-family: 'Playfair Display', serif; font-size: 32px; margin: 0; }
+.brand-bio { font-size: 14px; opacity: 0.6; margin-top: 10px; }
 
-/* Services */
-.service-card { background: var(--white); border-radius: 20px; padding: 20px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
-.service-name { font-weight: 700; }
-.service-price { font-weight: 900; color: var(--olive-dark); }
+/* Service Cards */
+.section-label { font-size: 10px; text-transform: uppercase; letter-spacing: 3px; font-weight: 800; margin-bottom: 20px; opacity: 0.5; text-align: center; }
+.service-item { background: var(--white); padding: 20px; border-radius: 20px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; border: 1px solid rgba(0,0,0,0.02); transition: 0.3s; }
+.service-item:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
 
-/* Portfolio */
-.portfolio-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.port-item { background: #D0CDC7; height: 140px; border-radius: 15px; }
+/* Booking Modal */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(10px); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 20px; }
+.modal-card { background: var(--white); width: 100%; max-width: 400px; border-radius: 30px; padding: 30px; position: relative; }
+.modal-close { position: absolute; top: 20px; right: 20px; border: none; background: none; font-size: 20px; cursor: pointer; }
 
-/* Modal */
-.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(10px); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 20px; }
-.modal-card { background: white; width: 100%; max-width: 380px; border-radius: 35px; padding: 30px; position: relative; }
-.btn-close { margin-top: 20px; width: 100%; background: #EEE; border: none; padding: 15px; border-radius: 15px; font-weight: 700; }
+/* Calendar Style */
+.calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin-top: 15px; }
+.day-btn { padding: 10px 0; border: none; background: var(--sand); border-radius: 10px; font-size: 12px; cursor: pointer; }
+.day-btn.active { background: var(--olive); color: white; }
+
+/* Admin Dashboard */
+.admin-nav { background: var(--white); padding: 15px 25px; border-bottom: 1px solid #EEE; display: flex; justify-content: space-between; }
+.admin-tabs { display: flex; gap: 10px; padding: 20px; overflow-x: auto; }
+.admin-tabs button { background: var(--white); border: 1px solid #DDD; padding: 10px 20px; border-radius: 10px; font-weight: 600; cursor: pointer; }
+.admin-grid { display: grid; grid-template-columns: 80px 1fr 1fr; border: 1px solid #EEE; background: white; }
+.admin-cell { border: 0.5px solid #F5F5F5; height: 80px; position: relative; }
+
+/* UI Elements */
+.btn-primary { background: var(--olive-dark); color: white; border: none; padding: 18px; width: 100%; border-radius: 15px; font-weight: 700; cursor: pointer; margin-top: 10px; }
+input { width: 100%; padding: 15px; border: 1px solid #DDD; border-radius: 12px; margin-bottom: 10px; outline: none; }
