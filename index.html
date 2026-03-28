@@ -3,20 +3,135 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CLUB 595 PRO</title>
-    <!-- Firebase -->
+    <title>CLUB 595 | Official App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&display=swap" rel="stylesheet">
+    <style>
+        :root { --olive: #8E9382; --olive-dark: #5B6356; --bg: #FDF9ED; --peach: #F6AD94; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: #3A3D38; }
+        .booking-badge { position: absolute; inset: 2px; background: var(--peach); border-left: 4px solid #E57373; border-radius: 4px; padding: 4px; font-size: 10px; font-weight: 800; cursor: pointer; overflow: hidden; }
+    </style>
 </head>
 <body>
-    <div id="app">
-        <!-- Сюда всё будет подгружаться из JS -->
-    </div>
-    
-    <script src="app.js"></script>
-    <script src="admin.js"></script>
+<div id="app"></div>
+<script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyDFvlQ-tr9hARes2Z8M5iK8h2bJQlWNJD8",
+        authDomain: "club595.firebaseapp.com",
+        projectId: "club595",
+        storageBucket: "club595.firebasestorage.app",
+        messagingSenderId: "452572247063",
+        appId: "1:452572247063:web:040230b948ada5b9a69852"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const auth = firebase.auth();
+
+    let state = { view: 'home', services: [], bookings: [], selectedSvc: null, selectedDate: new Date().toISOString().split('T')[0], selectedBooking: null };
+
+    db.collection("services").onSnapshot(snap => { state.services = snap.docs.map(doc => ({id: doc.id, ...doc.data()})); render(); });
+    db.collection("bookings").onSnapshot(snap => { state.bookings = snap.docs.map(doc => ({id: doc.id, ...doc.data()})); render(); });
+
+    window.confirmBooking = async () => {
+        const n = document.getElementById('c-name').value;
+        const p = document.getElementById('c-phone').value;
+        const t = document.getElementById('c-time').value;
+        if(!n || !p) return alert("Fill fields");
+        await db.collection("bookings").add({ name: n, phone: p, time: t, date: state.selectedDate, service: state.selectedSvc.name, master: 'm1', sessionsLeft: 10 });
+        state.view = 'success'; render();
+    };
+
+    window.deduct = async (id) => {
+        await db.collection("bookings").doc(id).update({ sessionsLeft: firebase.firestore.FieldValue.increment(-1) });
+        state.selectedBooking.sessionsLeft--; render();
+    };
+
+    function render() {
+        const root = document.getElementById('app');
+        if (state.view === 'home') {
+            root.innerHTML = `
+                <div class="max-w-md mx-auto p-6 text-center">
+                    <header class="py-10">
+                        <div class="w-20 h-20 bg-[#8E9382] rounded-full mx-auto mb-4 flex items-center justify-center text-white font-black text-xl shadow-lg">595</div>
+                        <h1 class="text-4xl font-black tracking-tighter">CLUB 5/95</h1>
+                        <p class="text-[#8E9382] text-[10px] font-bold tracking-[0.4em] uppercase mt-2">Aesthetic & Tech Studio</p>
+                    </header>
+                    <div class="space-y-4">
+                        ${state.services.map(s => `
+                            <div onclick="state.selectedSvc=state.services.find(x=>x.id==='${s.id}'); state.view='booking'; render();" class="bg-white p-5 rounded-[24px] shadow-sm flex justify-between items-center cursor-pointer border border-transparent hover:border-[#8E9382]">
+                                <div class="text-left"><div class="font-bold text-sm">${s.name}</div><div class="text-[10px] opacity-40">${s.duration} min</div></div>
+                                <div class="font-black text-lg text-[#8B5E3C]">$${s.price}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <button onclick="state.view='login'; render();" class="mt-20 text-[9px] font-bold text-gray-300 uppercase tracking-widest">Staff Access</button>
+                </div>`;
+        }
+        if (state.view === 'booking') {
+            root.innerHTML = `<div class="max-w-md mx-auto p-6">
+                <button onclick="state.view='home'; render();" class="mb-6 font-bold text-gray-400">← BACK</button>
+                <div class="bg-white p-8 rounded-[40px] shadow-2xl">
+                    <h2 class="text-2xl font-black mb-6">${state.selectedSvc.name}</h2>
+                    <input type="date" value="${state.selectedDate}" onchange="state.selectedDate=this.value" class="w-full p-4 bg-gray-50 rounded-xl mb-4 font-bold outline-none">
+                    <select id="c-time" class="w-full p-4 bg-gray-50 rounded-xl mb-6 font-bold outline-none"><option>10:00 AM</option><option>12:00 PM</option><option>02:00 PM</option><option>04:00 PM</option></select>
+                    <input type="text" id="c-name" placeholder="Name" class="w-full p-4 bg-gray-50 rounded-xl mb-2 outline-none">
+                    <input type="tel" id="c-phone" placeholder="Phone" class="w-full p-4 bg-gray-50 rounded-xl mb-8 outline-none">
+                    <button onclick="confirmBooking()" class="w-full bg-[#5B6356] text-white p-5 rounded-2xl font-bold uppercase tracking-widest">Confirm</button>
+                </div>
+            </div>`;
+        }
+        if (state.view === 'login') {
+            root.innerHTML = `<div class="flex items-center justify-center min-h-screen p-6 text-center">
+                <div class="bg-white p-10 rounded-[48px] shadow-2xl w-full max-w-sm">
+                    <h2 class="text-2xl font-black mb-8 italic tracking-tighter text-[#5B6356]">Admin Login</h2>
+                    <input type="email" id="adm-email" placeholder="Email" class="w-full p-4 bg-gray-50 rounded-xl mb-3">
+                    <input type="password" id="adm-pass" placeholder="Password" class="w-full p-4 bg-gray-50 rounded-xl mb-8">
+                    <button onclick="auth.signInWithEmailAndPassword(document.getElementById('adm-email').value, document.getElementById('adm-pass').value).then(()=>{state.view='admin';render();}).catch(e=>alert(e.message))" class="w-full bg-[#5B6356] text-white p-5 rounded-2xl font-bold uppercase tracking-widest">Login</button>
+                    <button onclick="state.view='home';render();" class="mt-4 text-gray-300 text-xs uppercase">Back</button>
+                </div>
+            </div>`;
+        }
+        if (state.view === 'admin') {
+            root.innerHTML = `<div class="min-h-screen bg-white">
+                <header class="p-5 border-b flex justify-between items-center sticky top-0 bg-white z-20">
+                    <input type="date" value="${state.selectedDate}" onchange="state.selectedDate=this.value; render()" class="font-bold border-none outline-none">
+                    <div onclick="location.reload()" class="font-black italic text-[#8E9382] cursor-pointer">CLUB 595</div>
+                </header>
+                <div class="flex border-b text-[9px] font-black text-gray-400 uppercase tracking-widest text-center bg-gray-50"><div class="w-16 p-4 border-r">Time</div><div class="flex-1 p-4">Schedule</div></div>
+                ${['10:00 AM', '12:00 PM', '02:00 PM', '04:00 PM'].map(h => `
+                    <div class="flex border-b min-h-[90px]">
+                        <div class="w-16 p-2 text-[10px] text-gray-300 font-bold border-r text-right">${h}</div>
+                        <div class="flex-1 relative">
+                            ${state.bookings.filter(b=>b.time===h && b.date===state.selectedDate).map(b=>`
+                                <div onclick="state.selectedBooking=state.bookings.find(x=>x.id==='${b.id}'); render();" class="booking-badge">
+                                    <div class="truncate">${b.name}</div><div class="text-[8px] opacity-60">${b.service}</div>
+                                </div>`).join('')}
+                        </div>
+                    </div>`).join('')}
+            </div>
+            ${state.selectedBooking ? `<div class="fixed inset-0 bg-black/60 flex items-center justify-center p-4 z-50">
+                <div class="bg-white w-full max-w-sm rounded-[40px] p-8 shadow-2xl relative">
+                    <button onclick="state.selectedBooking=null; render();" class="absolute top-6 right-8 text-2xl text-gray-300">✕</button>
+                    <h2 class="text-2xl font-black mb-1 tracking-tighter">${state.selectedBooking.name}</h2>
+                    <p class="text-blue-500 font-bold mb-6 text-sm">${state.selectedBooking.phone}</p>
+                    <div class="bg-[#FDF9ED] p-6 rounded-3xl mb-6 flex justify-between items-center">
+                        <div><div class="text-[10px] font-black opacity-40 uppercase">Sessions</div><div class="text-2xl font-black">${state.selectedBooking.sessionsLeft}</div></div>
+                        <button onclick="deduct('${state.selectedBooking.id}')" class="bg-[#5B6356] text-white px-4 py-2 rounded-xl font-bold text-[10px]">DEDUCT</button>
+                    </div>
+                </div>
+            </div>` : ''}`;
+        }
+        if (state.view === 'success') {
+            root.innerHTML = `<div class="flex flex-col items-center justify-center min-h-screen text-center p-10">
+                <div class="text-7xl mb-6">🌿</div><h2 class="text-3xl font-black mb-2">SUCCESS!</h2><p class="text-gray-400">Wait for you at the studio.</p>
+                <button onclick="location.reload()" class="mt-10 bg-[#5B6356] text-white px-10 py-4 rounded-full font-bold uppercase text-xs">Ok</button>
+            </div>`;
+        }
+    }
+    render();
+</script>
 </body>
 </html>
